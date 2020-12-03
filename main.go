@@ -44,12 +44,13 @@ func main() {
  * @Author: iccy
  * @Date: 2020/12/3
  */
-func dateStrToNum(data string) (num []int, err error) {
-	strArray := strings.Split(data, ".")
+func dateStrToNum(date string) (num []int, err error) {
+	strArray := strings.Split(date, ".")
 	if len(strArray) != 3 {
 		return []int{}, errors.New("incorrect parameter format")
 	}
 
+	num = make([]int, 3)
 	for k, _ := range strArray {
 		num[k], err = strconv.Atoi(strArray[k])
 		check(&err)
