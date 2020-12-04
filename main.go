@@ -26,9 +26,17 @@ var weekday = []string{
 	"Saturday",
 }
 
+var version string = "v1.0"
+
 func main() {
 	if len(os.Args) != 2 || os.Args[1] == "-h" || os.Args[1] == "--help" {
 		fmt.Println("Please enter a date in this format -- \033[31myyyy.mm.dd\033[0m\n$ Zeller 1949.10.1")
+		return
+	}
+
+	if os.Args[1] == "-v" || os.Args[1] == "--version" {
+		fmt.Println("Zeller", version, `- Calculate the day of the week
+Copyright (c) iccy 2020-xxxx, MIT Open Source Software.`)
 		return
 	}
 
