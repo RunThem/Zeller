@@ -84,6 +84,7 @@ func zeller(nums []int) int {
 
 	var c, y, m, d int = int(nums[0] / 100), nums[0] % 100, nums[1], nums[2]
 
+	// TODO: Debug -> Error calculating day of the week for dates 1582-10-4 and before
 	// Dates before 1582-10-4 have different formulas
 	if (nums[0] < 1582) || (nums[0] == 1582 && ((nums[1] < 10) || (nums[1] == 10 && nums[2] <= 4))) {
 		// golang: Take the remainder of a negative number

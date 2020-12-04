@@ -40,3 +40,9 @@ func Test_zeller(t *testing.T) {
 		}
 	}
 }
+
+func Benchmark_zeller(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		zeller(str[4].num)
+	}
+}

@@ -6,3 +6,6 @@ iccy ~/zeller (master*)
 » zeller 2000.10.13
 2000.10.13 it's Friday
 ```
+
+## Debug
+目前1582-10-4日之前的星期计算出错, 还没有找到bug在哪
