@@ -1,7 +1,13 @@
 /**
- * @Author:    iccy
- * @Mail:      iccy.fun@outlook.com
- * @Data:      2020/12/3 14:26
+ * Copyright 2021 RunThem. All Rights Reserved.
+ *
+ * Distributed under MIT license.
+ *
+ * See file LICENSE for detail or copy at https://opensource.org/licenses/MIT
+ *
+ * Author: RunThem
+ * Email: iccy.fun@outlook.com
+ * Created at 2020/12/3 14:26
  */
 
 package main
