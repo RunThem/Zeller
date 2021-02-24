@@ -13,12 +13,8 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"strconv"
-	"strings"
-	"time"
 )
 
 var weekday = []string{
@@ -31,81 +27,20 @@ var weekday = []string{
 	"Saturday",
 }
 
+func init() {
+	log.SetFlags(log.LstdFlags ^ log.Ldate ^ log.Ltime)
+}
+
 func main() {
 	date := commandLine()
 
-	if date == "" {
-		return
-	}
-
-
-	log.SetFlags(log.LstdFlags ^ log.Ldate ^ log.Ltime)
-
-	if _, err := time.Parse("2006.1.2", date); err != nil {
-		log.Fatalln(err)
-	}
-
-	numArray, err := dateStrToNum(date)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	numArray := strToNum(date)
 
 	fmt.Printf("%s it's %s\n", date, weekday[zeller(numArray)])
 }
 
-/*
- * @Description: Cut the date string and turn it into a number
- * @Param: string
- * @Return: []int, error
- * @Author: RunThem
- * @Date: 2020/12/3
- */
-func dateStrToNum(date string) (num []int, err error) {
-	strArray := strings.Split(date, ".")
-	if len(strArray) != 3 {
-		return []int{}, errors.New("incorrect parameter format")
-	}
-
-	num = make([]int, 3)
-	for k := range strArray {
-		num[k], err = strconv.Atoi(strArray[k])
-		check(&err)
-	}
-	if err != nil {
-		return []int{}, errors.New("parameter error")
-	}
-
-	return num, nil
-}
-
-func check(err *error) {
+func check(err *error, f func(...interface{})) {
 	if *err != nil {
-		log.Println(*err)
+		f(*err)
 	}
-}
-
-/*
- * @Description: Zeller formula
- * @Param: []int
- * @Return: int
- * @Author: RunThem
- * @Date: 2020/12/4
- */
-func zeller(nums []int) int {
-	// January and February are the 13 and 14 months of the previous year, so a year begins in March
-	if nums[1] > 0 && nums[1] < 3 {
-		nums[1] += 12
-		nums[0]--
-	}
-
-	var c, y, m, d = nums[0] / 100, nums[0] % 100, nums[1], nums[2]
-
-	// TODO: Debug -> Error calculating day of the week for dates 1582-10-4 and before
-	// Dates before 1582-10-4 have different formulas
-	if (nums[0] < 1582) || (nums[0] == 1582 && ((nums[1] < 10) || (nums[1] == 10 && nums[2] <= 4))) {
-		// golang: Take the remainder of a negative number
-		return ((y+y/4-c+(26*(m+1))/10+d+4)%7 + 7) % 7
-	}
-
-	return ((y+y/4+c/4-2*c+(26*(m+1))/10+d-1)%7 + 7) % 7
 }
