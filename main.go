@@ -16,7 +16,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -32,39 +31,33 @@ var weekday = []string{
 	"Saturday",
 }
 
-var version string = "v1.0"
-
 func main() {
-	if len(os.Args) != 2 || os.Args[1] == "-h" || os.Args[1] == "--help" {
-		fmt.Println("Please enter a date in this format -- \033[31myyyy.mm.dd\033[0m\n$ Zeller 1949.10.1")
+	date := commandLine()
+
+	if date == "" {
 		return
 	}
 
-	if os.Args[1] == "-v" || os.Args[1] == "--version" {
-		fmt.Println("Zeller", version, `- Calculate the day of the week
-Copyright (c) iccy 2020-xxxx, MIT Open Source Software.`)
-		return
-	}
 
 	log.SetFlags(log.LstdFlags ^ log.Ldate ^ log.Ltime)
 
-	if _, err := time.Parse("2006.1.2", os.Args[1]); err != nil {
+	if _, err := time.Parse("2006.1.2", date); err != nil {
 		log.Fatalln(err)
 	}
 
-	numArray, err := dateStrToNum(os.Args[1])
+	numArray, err := dateStrToNum(date)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	fmt.Printf("%s it's %s\n", os.Args[1], weekday[zeller(numArray)])
+	fmt.Printf("%s it's %s\n", date, weekday[zeller(numArray)])
 }
 
 /*
  * @Description: Cut the date string and turn it into a number
  * @Param: string
  * @Return: []int, error
- * @Author: iccy
+ * @Author: RunThem
  * @Date: 2020/12/3
  */
 func dateStrToNum(date string) (num []int, err error) {
@@ -74,7 +67,7 @@ func dateStrToNum(date string) (num []int, err error) {
 	}
 
 	num = make([]int, 3)
-	for k, _ := range strArray {
+	for k := range strArray {
 		num[k], err = strconv.Atoi(strArray[k])
 		check(&err)
 	}
@@ -95,7 +88,7 @@ func check(err *error) {
  * @Description: Zeller formula
  * @Param: []int
  * @Return: int
- * @Author: iccy
+ * @Author: RunThem
  * @Date: 2020/12/4
  */
 func zeller(nums []int) int {
@@ -105,14 +98,14 @@ func zeller(nums []int) int {
 		nums[0]--
 	}
 
-	var c, y, m, d int = int(nums[0] / 100), nums[0] % 100, nums[1], nums[2]
+	var c, y, m, d = nums[0] / 100, nums[0] % 100, nums[1], nums[2]
 
 	// TODO: Debug -> Error calculating day of the week for dates 1582-10-4 and before
 	// Dates before 1582-10-4 have different formulas
 	if (nums[0] < 1582) || (nums[0] == 1582 && ((nums[1] < 10) || (nums[1] == 10 && nums[2] <= 4))) {
 		// golang: Take the remainder of a negative number
-		return ((y+int(y/4)-c+int((26*(m+1))/10)+d+4)%7 + 7) % 7
+		return ((y+y/4-c+(26*(m+1))/10+d+4)%7 + 7) % 7
 	}
 
-	return ((y+int(y/4)+int(c/4)-2*c+int((26*(m+1))/10)+d-1)%7 + 7) % 7
+	return ((y+y/4+c/4-2*c+(26*(m+1))/10+d-1)%7 + 7) % 7
 }
