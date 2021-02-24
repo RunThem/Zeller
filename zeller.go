@@ -13,8 +13,6 @@
 package main
 
 import (
-	"log"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -23,17 +21,15 @@ import (
 /*
  * @Description: Cut the date string and turn it into a number
  * @Param: string
- * @Return: []int
+ * @Return: []int, error
  * @Author: RunThem
  * @Date: 2020/12/3
  */
-func StrToNum(date string) []int {
-	if date == "" {
-		os.Exit(0)
-	}
-
+func StrToNum(date string) ([]int, error) {
 	_, err := time.Parse("2006.1.2", date)
-	check(&err, log.Fatalln)
+	if err != nil {
+		return []int{}, err
+	}
 
 	strArray := strings.Split(date, ".")
 
@@ -42,17 +38,22 @@ func StrToNum(date string) []int {
 		numArray[i], _ = strconv.Atoi(strArray[i])
 	}
 
-	return numArray
+	return numArray, nil
 }
 
 /*
  * @Description: Zeller formula
- * @Param: []int
- * @Return: int
+ * @Param: string
+ * @Return: int, error
  * @Author: RunThem
  * @Date: 2020/12/4
  */
-func Zeller(nums []int) int {
+func Zeller(date string) (int, error) {
+	nums, err := StrToNum(date)
+	if err != nil {
+		return 0, err
+	}
+
 	// January and February are the 13 and 14 months of the previous year, so a year begins in March
 	if nums[1] > 0 && nums[1] < 3 {
 		nums[1] += 12
@@ -65,8 +66,8 @@ func Zeller(nums []int) int {
 	// Dates before 1582-10-4 have different formulas
 	if (nums[0] < 1582) || (nums[0] == 1582 && ((nums[1] < 10) || (nums[1] == 10 && nums[2] <= 4))) {
 		// golang: Take the remainder of a negative number
-		return ((y+y/4-c+(26*(m+1))/10+d+4)%7 + 7) % 7
+		return ((y+y/4-c+(26*(m+1))/10+d+4)%7 + 7) % 7, nil
 	}
 
-	return ((y+y/4+c/4-2*c+(26*(m+1))/10+d-1)%7 + 7) % 7
+	return ((y+y/4+c/4-2*c+(26*(m+1))/10+d-1)%7 + 7) % 7, nil
 }

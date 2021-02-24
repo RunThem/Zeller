@@ -18,7 +18,7 @@ import (
 	"os"
 )
 
-var weekday = []string{
+var DayNames = []string{
 	"Sunday",
 	"Monday",
 	"Tuesday",
@@ -34,10 +34,14 @@ func init() {
 
 func main() {
 	date := CommandLine(os.Args[1:])
+	if date == "" {
+		return
+	}
 
-	numArray := StrToNum(date)
+	day, err := Zeller(date)
+	check(&err, log.Fatalln)
 
-	fmt.Printf("%s it's %s\n", date, weekday[Zeller(numArray)])
+	fmt.Printf("%s it's %s\n", date, DayNames[day])
 }
 
 func check(err *error, f func(...interface{})) {

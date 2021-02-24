@@ -17,7 +17,7 @@ import (
 	"fmt"
 )
 
-var Version = "v2.0"
+var Version = "v2.5"
 
 /*
  * @Description: Displays help and version information
