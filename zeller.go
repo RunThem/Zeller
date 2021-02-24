@@ -27,7 +27,7 @@ import (
  * @Author: RunThem
  * @Date: 2020/12/3
  */
-func strToNum(date string) []int {
+func StrToNum(date string) []int {
 	if date == "" {
 		os.Exit(0)
 	}
@@ -52,7 +52,7 @@ func strToNum(date string) []int {
  * @Author: RunThem
  * @Date: 2020/12/4
  */
-func zeller(nums []int) int {
+func Zeller(nums []int) int {
 	// January and February are the 13 and 14 months of the previous year, so a year begins in March
 	if nums[1] > 0 && nums[1] < 3 {
 		nums[1] += 12

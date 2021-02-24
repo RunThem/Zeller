@@ -15,6 +15,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 )
 
 var weekday = []string{
@@ -32,11 +33,11 @@ func init() {
 }
 
 func main() {
-	date := commandLine()
+	date := CommandLine(os.Args[1:])
 
-	numArray := strToNum(date)
+	numArray := StrToNum(date)
 
-	fmt.Printf("%s it's %s\n", date, weekday[zeller(numArray)])
+	fmt.Printf("%s it's %s\n", date, weekday[Zeller(numArray)])
 }
 
 func check(err *error, f func(...interface{})) {

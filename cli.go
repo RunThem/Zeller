@@ -17,7 +17,7 @@ import (
 	"fmt"
 )
 
-var Version = "v1.5"
+var Version = "v2.0"
 
 /*
  * @Description: Displays help and version information
@@ -26,20 +26,22 @@ var Version = "v1.5"
  * @Author: RunThem
  * @Date: 2021/2/24
  */
-func commandLine() string {
-	help := flag.Bool("h", false, "show help")
-	version := flag.Bool("v", false, "show version")
+func CommandLine(arguments []string) string {
+	cli := flag.NewFlagSet("Zeller", flag.ExitOnError)
+	help := cli.Bool("h", false, "show help")
+	version := cli.Bool("v", false, "show version")
 
-	flag.Parse()
+	cli.Parse(arguments)
 
-	if *help {
-		fmt.Println("Please enter a date in this format -- \033[31myyyy.mm.dd\033[0m\n$ Zeller 1949.10.1")
+	isTrue(*help, "Please enter a date in this format -- \033[31myyyy.mm.dd\033[0m\n$ Zeller 1949.10.1\n")
+	isTrue(*version, fmt.Sprintf("Zeller %s - Calculate the day of the week\n"+
+		"Copyright (c) RunThem 2020-xxxx, MIT Open Source Software.\n", Version))
+
+	return cli.Arg(0)
+}
+
+func isTrue(b bool, str string) {
+	if b {
+		fmt.Print(str)
 	}
-
-	if *version {
-		fmt.Printf("Zeller %s - Calculate the day of the week\n"+
-			"Copyright (c) RunThem 2020-xxxx, MIT Open Source Software.\n", Version)
-	}
-
-	return flag.Arg(0)
 }
