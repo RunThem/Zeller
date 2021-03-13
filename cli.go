@@ -21,8 +21,8 @@ var Version = "v2.5"
 
 /*
  * @Description: Displays help and version information
- * @Param: void
- * @Return: string
+ * @Param: [[]string]
+ * @Return: [string]
  * @Author: RunThem
  * @Date: 2021/2/24
  */
@@ -40,8 +40,8 @@ func CommandLine(arguments []string) string {
 	return cli.Arg(0)
 }
 
-func isTrue(b bool, str string) {
-	if b {
-		fmt.Print(str)
+func isTrue(expr bool, msg string) {
+	if expr {
+		fmt.Print(msg)
 	}
 }

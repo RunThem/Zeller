@@ -20,8 +20,8 @@ import (
 
 /*
  * @Description: Cut the date string and turn it into a number
- * @Param: string
- * @Return: []int, error
+ * @Param: [string]
+ * @Return: [[]int, error]
  * @Author: RunThem
  * @Date: 2020/12/3
  */
@@ -31,20 +31,20 @@ func StrToNum(date string) ([]int, error) {
 		return []int{}, err
 	}
 
-	strArray := strings.Split(date, ".")
+	strSlice := strings.Split(date, ".")
 
-	numArray := make([]int, 3)
-	for i := range strArray {
-		numArray[i], _ = strconv.Atoi(strArray[i])
+	numSlice := make([]int, 3)
+	for i := range strSlice {
+		numSlice[i], _ = strconv.Atoi(strSlice[i])
 	}
 
-	return numArray, nil
+	return numSlice, nil
 }
 
 /*
  * @Description: Zeller formula
- * @Param: string
- * @Return: int, error
+ * @Param: [string]
+ * @Return: [int, error]
  * @Author: RunThem
  * @Date: 2020/12/4
  */
